@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Albums - Family Tree</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ========== GLOBAL VARIABLES ========== */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --accent: #00d2ff;
+            --bg-dark: #0f172a;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-light: #ffffff;
+            --text-gray: #cbd5e1;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 20px 40px rgba(0, 210, 255, 0.3);
+            --border-radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ========== RESET & BASE ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ========== SPLASH SCREEN ========== */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+            animation: fadeOut 1s ease-in-out 3s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        .splash-logo {
+            font-size: 4rem;
+            background: linear-gradient(45deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .splash-subtitle {
+            color: var(--text-gray);
+            font-size: 1.2rem;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* ========== NAVIGATION ========== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 5%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .logo i {
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+            background: rgba(0, 210, 255, 0.1);
+        }
+
+        .nav-link.active {
+            color: var(--accent);
+            background: rgba(0, 210, 255, 0.15);
+        }
+
+        .search-box {
+            position: relative;
+            background: var(--glass-bg);
+            border-radius: 12px;
+            padding: 12px 20px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            min-width: 300px;
+            transition: var(--transition);
+        }
+
+        .search-box:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.1);
+        }
+
+        .search-box i {
+            color: var(--text-gray);
+            margin-right: 10px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            width: 100%;
+            font-size: 15px;
+            outline: none;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-gray);
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            padding: 140px 5% 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(0, 210, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(0, 210, 255, 0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        /* ========== BREADCRUMBS ========== */
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px auto;
+            flex-wrap: wrap;
+            padding: 20px 5%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            max-width: 1200px;
+        }
+
+        .back-btn {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Hind Siliguri', sans-serif;
+            display: none;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .path-text {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* ========== CATEGORIES ========== */
+        .categories {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px auto;
+            flex-wrap: wrap;
+            padding: 0 5%;
+            max-width: 1200px;
+        }
+
+        .category-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-gray);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        .category-btn:hover {
+            background: rgba(0, 210, 255, 0.1);
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .category-btn.active {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-color: transparent;
+        }
+
+        /* ========== MAIN GRID ========== */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+            padding: 30px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: 25px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 15px;
+            transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover .card-image {
+            border-color: var(--accent);
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .card-relation {
+            display: inline-block;
+            background: rgba(0, 210, 255, 0.2);
+            color: var(--accent);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .card-description {
+            color: var(--text-gray);
+            font-size: 13px;
+            line-height: 1.5;
+            margin-top: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-children {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+
+        .card-children i {
+            margin-right: 5px;
+            color: var(--accent);
+        }
+
+        .card-favorite {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .card-favorite:hover {
+            color: #ff4757;
+            transform: scale(1.2);
+        }
+
+        .card-favorite.active {
+            color: #ff4757;
+            animation: heartBeat 0.6s ease;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.3); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.2); }
+        }
+
+        /* ========== MODAL ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: var(--bg-gradient);
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            animation: modalSlide 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes modalSlide {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header h3 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(45deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .close-modal {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-light);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 20px;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(90vh - 120px);
+        }
+
+        .member-detail {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .member-detail {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .member-photo {
+            width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        .member-info h2 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+
+        .member-relation-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .member-description {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            margin: 25px 0;
+            border-left: 4px solid var(--accent);
+        }
+
+        .member-description h4 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .member-family {
+            margin-top: 30px;
+        }
+
+        .member-family h4 {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .family-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .family-member {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .family-member:hover {
+            background: rgba(0, 210, 255, 0.1);
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .family-member img {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* ========== LOADER ========== */
+        .loader {
+            text-align: center;
+            padding: 60px;
+            display: none;
+        }
+
+        .loader i {
+            font-size: 3rem;
+            color: var(--accent);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ========== EMPTY STATE ========== */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+
+        .empty-state p {
+            color: var(--text-gray);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            text-align: center;
+            padding: 40px 5%;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-gray);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-link:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            font-size: 14px;
+            margin-top: 20px;
+            opacity: 0.7;
+        }
+
+        /* ========== RESPONSIVE DESIGN ========== */
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .search-box {
+                min-width: 200px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 5%;
+            }
+            
+            .logo {
+                font-size: 1.2rem;
+            }
+            
+            .search-box {
+                min-width: 150px;
+                padding: 10px 15px;
+            }
+            
+            .hero {
+                padding: 120px 5% 40px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 20px;
+                padding: 20px 5%;
+            }
+            
+            .card {
+                padding: 20px 15px;
+            }
+            
+            .card-image {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .breadcrumbs {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .categories {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+            
+            .category-btn {
+                white-space: nowrap;
+            }
+        }
+
+        /* ========== ANIMATIONS ========== */
+        .fade-in {
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== CUSTOM SCROLLBAR ========== */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, var(--accent), var(--primary));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+        }
+
+        /* ========== GRID ANIMATIONS ========== */
+        .grid-animation {
+            animation: gridAppear 0.8s ease-out;
+        }
+
+        @keyframes gridAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* ========== HOVER EFFECTS ========== */
+        .glow {
+            position: relative;
+        }
+
+        .glow::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--accent), var(--primary), var(--secondary));
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .glow:hover::after {
+            opacity: 0.5;
+        }
+
+        /* ========== CATEGORY BADGES ========== */
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(114, 9, 183, 0.2);
+            color: var(--accent);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin: 5px;
+        }
+
+        /* ========== FILTER BUTTONS ========== */
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-gray);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-color: transparent;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <div class="splash-logo">
+            <i class="fas fa-family"></i> Our Albums
+        </div>
+        <p class="splash-subtitle">Connecting Generations, Preserving Memories...</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <i class="fas fa-family"></i>
+            <span>Our Albums</span>
+        </div>
+        
+        <div class="nav-links">
+            <a href="#" class="nav-link active" onclick="showCategory('root')">
+                <i class="fas fa-home"></i> হোম
+            </a>
+            <a href="#" class="nav-link" onclick="showCategory('all')">
+                <i class="fas fa-users"></i> সব সদস্য
+            </a>
+            <a href="#" class="nav-link" onclick="showTreeView()">
+                <i class="fas fa-project-diagram"></i> ফ্যামিলি ট্রি
+            </a>
+            <a href="#" class="nav-link" onclick="showFavorites()">
+                <i class="fas fa-heart"></i> পছন্দসমূহ
+            </a>
+        </div>
+        
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="সদস্য খুঁজুন...">
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>লা ইলাহা ইল্লাল্লাহু মুহাম্মাদুর রাসুলুল্লাহ</h1>
+        <p class="hero-subtitle"></p>
+    </div>
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+        <button class="back-btn" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i> পিছনে যান
+        </button>
+        <div class="path-text" id="path-text">
+            <i class="fas fa-home"></i> হোম
+        </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="categories" id="categories-container">
+        <!-- Categories will be loaded dynamically -->
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="filter-buttons" id="filter-buttons">
+        <button class="filter-btn active" onclick="filterByRelation('all')">সবাই</button>
+        <button class="filter-btn" onclick="filterByRelation('parents')">পিতামাতা</button>
+        <button class="filter-btn" onclick="filterByRelation('siblings')">ভাইবোন</button>
+        <button class="filter-btn" onclick="filterByRelation('children')">সন্তান</button>
+        <button class="filter-btn" onclick="filterByRelation('others')">অন্যান্য</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="loader" id="loader">
+        <i class="fas fa-spinner fa-spin"></i>
+    </div>
+    
+    <div class="grid" id="content-grid">
+        <!-- Cards will be loaded dynamically -->
+    </div>
+
+    <!-- Family Tree View -->
+    <div id="tree-view" style="display: none; padding: 30px 5%; max-width: 1400px; margin: 0 auto;">
+        <!-- Tree view will be loaded dynamically -->
+    </div>
+
+    <!-- Member Detail Modal -->
+    <div id="memberModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user"></i> সদস্য বিবরণ</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Member details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="#" class="footer-link" onclick="showCategory('root')">
+                <i class="fas fa-home"></i> হোম
+            </a>
+            <a href="#" class="footer-link" onclick="showTreeView()">
+                <i class="fas fa-tree"></i> ফ্যামিলি ট্রি
+            </a>
+            <a href="#" class="footer-link" onclick="showAllMembers()">
+                <i class="fas fa-users"></i> সব সদস্য
+            </a>
+            <a href="admin.html" class="footer-link" target="_blank">
+                <i class="fas fa-user-shield"></i> এডমিন লগিন
+            </a>
+        </div>
+        <div class="copyright">
+            © 2024Our Albums . All Rights Reserved.
+            <br>
+            <small>Designed with <i class="fas fa-heart" style="color: #ff4757;"></i> for preserving family memories</small>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC-09LCN-TMs4C1rJjhGAvuS0J2YF_4Gok",
+            authDomain: "gallery-543c3.firebaseapp.com",
+            databaseURL: "https://gallery-543c3-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "gallery-543c3",
+            storageBucket: "gallery-543c3.firebasestorage.app",
+            messagingSenderId: "267500846446",
+            appId: "1:267500846446:web:ded3180db2e8b75f66d57f",
+            measurementId: "G-MGCDTGE01G"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Global Variables
+        let allMembers = [];
+        let currentParent = 'root';
+        let historyStack = [];
+        let favorites = JSON.parse(localStorage.getItem('family_favorites') || '[]');
+        let currentView = 'grid';
+        let currentFilter = 'all';
+
+        // DOM Elements
+        const grid = document.getElementById('content-grid');
+        const loader = document.getElementById('loader');
+        const backBtn = document.querySelector('.back-btn');
+        const pathText = document.getElementById('path-text');
+        const searchInput = document.getElementById('searchInput');
+        const categoriesContainer = document.getElementById('categories-container');
+        const treeView = document.getElementById('tree-view');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+
+        // Fix Google Drive Links
+        window.fixLink = (url) => {
+            if (!url) return 'https://via.placeholder.com/150';
+            if (url.includes('drive.google.com')) {
+                let id = url.split('/d/')[1]?.split('/')[0] || url.split('id=')[1];
+                if (id) {
+                    id = id.split('?')[0];
+                    return `https://lh3.googleusercontent.com/u/0/d/${id}=w400`;
+                }
+            }
+            return url;
+        };
+
+        // Initialize App
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loadMembers('root');
+                loadCategories();
+                setupEventListeners();
+            }, 3000);
+        });
+
+        function setupEventListeners() {
+            // Search functionality
+            searchInput.addEventListener('keyup', debounce(async (e) => {
+                const query = e.target.value.trim();
+                if (query.length >= 2) {
+                    await searchMembers(query);
+                } else if (query.length === 0) {
+                    loadMembers(currentParent);
+                }
+            }, 300));
+
+            // Filter buttons
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Load Members
+        async function loadMembers(parentId, parentName = 'হোম') {
+            loader.style.display = 'block';
+            grid.innerHTML = '';
+            treeView.style.display = 'none';
+            grid.style.display = 'grid';
+            currentView = 'grid';
+
+            // Update UI
+            if (parentId === 'root') {
+                backBtn.style.display = 'none';
+                historyStack = [];
+                pathText.innerHTML = `<i class="fas fa-home"></i> হোম`;
+            } else {
+                backBtn.style.display = 'flex';
+                pathText.innerHTML = `<i class="fas fa-folder"></i> ${parentName}`;
+            }
+
+            try {
+                const q = query(collection(db, "family"), where("parentId", "==", parentId));
+                const snapshot = await getDocs(q);
+                loader.style.display = 'none';
+
+                if (snapshot.empty) {
+                    showEmptyState(parentName);
+                    return;
+                }
+
+                const members = [];
+                snapshot.forEach(doc => {
+                    members.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Sort by name
+                members.sort((a, b) => a.name.localeCompare(b.name));
+
+                // Display members
+                displayMembers(members);
+
+            } catch (error) {
+                console.error('Error loading members:', error);
+                loader.style.display = 'none';
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h3>লোড করতে সমস্যা</h3>
+                        <p>ডেটা লোড করতে সমস্যা হচ্ছে। দয়া করে আবার চেষ্টা করুন।</p>
+                    </div>`;
+            }
+        }
+
+        function displayMembers(members) {
+            grid.innerHTML = '';
+            
+            if (members.length === 0) {
+                showEmptyState();
+                return;
+            }
+
+            members.forEach(member => {
+                const card = createMemberCard(member);
+                grid.appendChild(card);
+            });
+
+            // Add animation
+            grid.classList.add('grid-animation');
+            setTimeout(() => grid.classList.remove('grid-animation'), 1000);
+        }
+
+        function createMemberCard(member) {
+            const card = document.createElement('div');
+            card.className = 'card fade-in';
+            
+            // Check if member has children
+            const children = allMembers.filter(m => m.parentId === member.id);
+            
+            const isFavorite = favorites.includes(member.id);
+            
+            card.innerHTML = `
+                <div class="card-favorite ${isFavorite ? 'active' : ''}" 
+                     onclick="toggleFavorite('${member.id}', event)">
+                    <i class="fas fa-heart"></i>
+                </div>
+                
+                <img src="${fixLink(member.imageUrl)}" 
+                     class="card-image" 
+                     onerror="this.src='https://via.placeholder.com/120'"
+                     alt="${member.name}">
+                
+                <h3>${member.name}</h3>
+                <div class="card-relation">${member.relation}</div>
+                
+                ${member.description ? `
+                    <div class="card-description">
+                        ${member.description.substring(0, 80)}${member.description.length > 80 ? '...' : ''}
+                    </div>
+                ` : ''}
+                
+                ${children.length > 0 ? `
+                    <div class="card-children">
+                        <i class="fas fa-users"></i>
+                        ${children.length} সদস্য
+                    </div>
+                ` : ''}
+            `;
+
+            card.onclick = (e) => {
+                if (!e.target.classList.contains('card-favorite') && 
+                    !e.target.closest('.card-favorite')) {
+                    openMemberDetail(member);
+                }
+            };
+
+            return card;
+        }
+
+        function showEmptyState(parentName = '') {
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-users-slash"></i>
+                    <h3>কোন সদস্য নেই</h3>
+                    <p>${parentName ? `${parentName} বিভাগে এখনো কোন সদস্য যোগ করা হয়নি।` : 'এখনো কোন সদস্য যোগ করা হয়নি।'}</p>
+                </div>`;
+        }
+
+        // Load Categories
+        async function loadCategories() {
+            try {
+                const snapshot = await getDocs(collection(db, "family"));
+                const categories = new Set(['root']);
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.parentId) {
+                        categories.add(data.parentId);
+                    }
+                });
+
+                // Find root members for categories
+                const rootMembers = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.parentId === 'root') {
+                        rootMembers.push({ id: doc.id, ...data });
+                    }
+                });
+
+                // Display categories
+                displayCategories(rootMembers);
+
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            }
+        }
+
+        function displayCategories(members) {
+            categoriesContainer.innerHTML = '';
+            
+            // Add All category
+            const allBtn = document.createElement('button');
+            allBtn.className = 'category-btn active';
+            allBtn.innerHTML = '<i class="fas fa-users"></i> সবাই';
+            allBtn.onclick = () => {
+                document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+                allBtn.classList.add('active');
+                showAllMembers();
+            };
+            categoriesContainer.appendChild(allBtn);
+
+            // Add member categories
+            members.forEach(member => {
+                const btn = document.createElement('button');
+                btn.className = 'category-btn';
+                btn.innerHTML = `
+                    <img src="${fixLink(member.imageUrl)}" 
+                         style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover;"
+                         onerror="this.src='https://via.placeholder.com/20'">
+                    ${member.name}
+                `;
+                btn.onclick = () => {
+                    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+                    btn.classList.add('active');
+                    historyStack.push({ id: currentParent, name: pathText.textContent });
+                    currentParent = member.id;
+                    loadMembers(member.id, member.name);
+                };
+                categoriesContainer.appendChild(btn);
+            });
+        }
+
+        // Search Members
+        async function searchMembers(query) {
+            loader.style.display = 'block';
+            grid.innerHTML = '';
+            pathText.innerHTML = `<i class="fas fa-search"></i> "${query}" এর ফলাফল`;
+            backBtn.style.display = 'flex';
+
+            try {
+                const snapshot = await getDocs(collection(db, "family"));
+                const results = [];
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.name.toLowerCase().includes(query.toLowerCase()) ||
+                        data.relation.toLowerCase().includes(query.toLowerCase()) ||
+                        (data.description && data.description.toLowerCase().includes(query.toLowerCase()))) {
+                        results.push({ id: doc.id, ...data });
+                    }
+                });
+
+                loader.style.display = 'none';
+
+                if (results.length === 0) {
+                    showEmptyState();
+                    return;
+                }
+
+                displayMembers(results);
+
+            } catch (error) {
+                console.error('Error searching:', error);
+                loader.style.display = 'none';
+            }
+        }
+
+        // Filter by Relation
+        function filterByRelation(relation) {
+            currentFilter = relation;
+            
+            if (relation === 'all') {
+                loadMembers(currentParent);
+                return;
+            }
+
+            const relationMap = {
+                'parents': ['বাবা', 'মা', 'পিতা', 'মাতা'],
+                'siblings': ['ভাই', 'বোন', 'দাদা', 'দিদি'],
+                'children': ['ছেলে', 'মেয়ে', 'পুত্র', 'কন্যা'],
+                'others': ['চাচা', 'মামা', 'খালা', 'ফুফু']
+            };
+
+            const filtered = allMembers.filter(member => 
+                relationMap[relation]?.includes(member.relation) ||
+                (relation === 'others' && ![...relationMap.parents, ...relationMap.siblings, ...relationMap.children].includes(member.relation))
+            );
+
+            displayMembers(filtered);
+        }
+
+        // Show All Members
+        function showAllMembers() {
+            historyStack = [];
+            currentParent = 'all';
+            backBtn.style.display = 'none';
+            pathText.innerHTML = '<i class="fas fa-users"></i> সব সদস্য';
+            
+            // Filter based on current filter
+            if (currentFilter === 'all') {
+                displayMembers(allMembers);
+            } else {
+                filterByRelation(currentFilter);
+            }
+        }
+
+        // Show Category
+        function showCategory(category) {
+            if (category === 'all') {
+                showAllMembers();
+            } else if (category === 'root') {
+                loadMembers('root');
+            }
+        }
+
+        // Show Tree View
+        function showTreeView() {
+            currentView = 'tree';
+            grid.style.display = 'none';
+            treeView.style.display = 'block';
+            pathText.innerHTML = '<i class="fas fa-project-diagram"></i> ফ্যামিলি ট্রি';
+            backBtn.style.display = 'flex';
+            
+            renderFamilyTree();
+        }
+
+        function renderFamilyTree() {
+            treeView.innerHTML = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2 style="color: var(--accent); margin-bottom: 20px;">
+                        <i class="fas fa-tree"></i> পরিবার ট্রি
+                    </h2>
+                    <p style="color: var(--text-gray); max-width: 800px; margin: 0 auto;">
+                        পরিবারের সকল সদস্যের মধ্যে সম্পর্কের গঠনগত চিত্র
+                    </p>
+                </div>
+                
+                <div id="tree-container" style="min-height: 600px; position: relative;"></div>
+            `;
+
+            // Simple tree visualization
+            const container = document.getElementById('tree-container');
+            
+            // Get root members
+            const rootMembers = allMembers.filter(m => m.parentId === 'root');
+            
+            let html = '<div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 30px;">';
+            
+            rootMembers.forEach(member => {
+                const children = allMembers.filter(m => m.parentId === member.id);
+                const grandchildren = children.flatMap(child => 
+                    allMembers.filter(m => m.parentId === child.id)
+                );
+                
+                html += `
+                    <div style="background: rgba(255, 255, 255, 0.05); border-radius: var(--border-radius); padding: 30px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                        <div style="text-align: center; margin-bottom: 30px;">
+                            <img src="${fixLink(member.imageUrl)}" 
+                                 style="width: 100px; height: 100px; border-radius: 12px; object-fit: cover; margin-bottom: 15px; border: 3px solid var(--accent);"
+                                 onerror="this.src='https://via.placeholder.com/100'">
+                            <h3 style="margin: 10px 0 5px 0;">${member.name}</h3>
+                            <div style="color: var(--accent); font-weight: 500;">${member.relation}</div>
+                        </div>
+                        
+                        ${children.length > 0 ? `
+                            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                                <h4 style="color: var(--text-gray); margin-bottom: 15px; text-align: center;">
+                                    <i class="fas fa-users"></i> সরাসরি সদস্য (${children.length})
+                                </h4>
+                                <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
+                                    ${children.map(child => `
+                                        <div style="background: rgba(0, 210, 255, 0.1); padding: 15px; border-radius: 10px; min-width: 120px; text-align: center; cursor: pointer;" 
+                                             onclick="openMemberDetail(${JSON.stringify(child).replace(/"/g, '&quot;')})">
+                                            <img src="${fixLink(child.imageUrl)}" 
+                                                 style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover; margin-bottom: 10px;"
+                                                 onerror="this.src='https://via.placeholder.com/60'">
+                                            <div style="font-weight: 500;">${child.name}</div>
+                                            <div style="font-size: 12px; color: var(--accent);">${child.relation}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // Show Favorites
+        function showFavorites() {
+            const favoriteMembers = allMembers.filter(member => favorites.includes(member.id));
+            
+            if (favoriteMembers.length === 0) {
+                pathText.innerHTML = '<i class="fas fa-heart"></i> পছন্দসমূহ';
+                showEmptyState();
+                return;
+            }
+            
+            pathText.innerHTML = '<i class="fas fa-heart"></i> পছন্দসমূহ';
+            backBtn.style.display = 'flex';
+            displayMembers(favoriteMembers);
+        }
+
+        // Toggle Favorite
+        window.toggleFavorite = (memberId, event) => {
+            event.stopPropagation();
+            
+            const index = favorites.indexOf(memberId);
+            const favoriteIcon = event.target.closest('.card-favorite');
+            
+            if (index === -1) {
+                favorites.push(memberId);
+                favoriteIcon.classList.add('active');
+            } else {
+                favorites.splice(index, 1);
+                favoriteIcon.classList.remove('active');
+            }
+            
+            localStorage.setItem('family_favorites', JSON.stringify(favorites));
+        };
+
+        // Open Member Detail
+        window.openMemberDetail = (member) => {
+            const modal = document.getElementById('memberModal');
+            const modalBody = document.getElementById('modal-body');
+            
+            // Get family members
+            const children = allMembers.filter(m => m.parentId === member.id);
+            const siblings = allMembers.filter(m => m.parentId === member.parentId && m.id !== member.id);
+            const parent = allMembers.find(m => m.id === member.parentId);
+            
+            modalBody.innerHTML = `
+                <div class="member-detail">
+                    <div>
+                        <img src="${fixLink(member.imageUrl)}" 
+                             class="member-photo" 
+                             onerror="this.src='https://via.placeholder.com/300'"
+                             alt="${member.name}">
+                        
+                        <div style="margin-top: 20px; display: flex; gap: 10px;">
+                            <button class="back-btn" style="flex: 1;" onclick="loadMembers('${member.parentId}')">
+                                <i class="fas fa-users"></i> পরিবারে ফিরুন
+                            </button>
+                            <button class="back-btn" style="flex: 1; background: linear-gradient(45deg, #ff4757, #ff6b81);" 
+                                    onclick="toggleFavorite('${member.id}', {stopPropagation:()=>{}}); location.reload()">
+                                <i class="fas fa-heart"></i> ${favorites.includes(member.id) ? 'পছন্দ অপসারণ' : 'পছন্দে যোগ করুন'}
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="member-info">
+                        <h2>${member.name}</h2>
+                        <div class="member-relation-badge">
+                            <i class="fas fa-user-tag"></i> ${member.relation}
+                        </div>
+                        
+                        ${member.description ? `
+                            <div class="member-description">
+                                <h4><i class="fas fa-info-circle"></i> সম্পর্কে</h4>
+                                <p>${member.description}</p>
+                            </div>
+                        ` : ''}
+                        
+                        ${children.length > 0 ? `
+                            <div class="member-family">
+                                <h4><i class="fas fa-child"></i> সন্তান/অধীনস্থ সদস্য (${children.length})</h4>
+                                <div class="family-grid">
+                                    ${children.map(child => `
+                                        <div class="family-member" onclick="openMemberDetail(${JSON.stringify(child).replace(/"/g, '&quot;')})">
+                                            <img src="${fixLink(child.imageUrl)}" 
+                                                 onerror="this.src='https://via.placeholder.com/80'"
+                                                 alt="${child.name}">
+                                            <div style="font-weight: 500;">${child.name}</div>
+                                            <div style="font-size: 12px; color: var(--accent);">${child.relation}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        ${siblings.length > 0 ? `
+                            <div class="member-family">
+                                <h4><i class="fas fa-users"></i> ভাইবোন/সমান স্তর (${siblings.length})</h4>
+                                <div class="family-grid">
+                                    ${siblings.map(sibling => `
+                                        <div class="family-member" onclick="openMemberDetail(${JSON.stringify(sibling).replace(/"/g, '&quot;')})">
+                                            <img src="${fixLink(sibling.imageUrl)}" 
+                                                 onerror="this.src='https://via.placeholder.com/80'"
+                                                 alt="${sibling.name}">
+                                            <div style="font-weight: 500;">${sibling.name}</div>
+                                            <div style="font-size: 12px; color: var(--accent);">${sibling.relation}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        };
+
+        // Close Modal
+        window.closeModal = () => {
+            document.getElementById('memberModal').style.display = 'none';
+        };
+
+        // Go Back
+        window.goBack = function() {
+            if (currentView === 'tree') {
+                loadMembers(currentParent);
+                return;
+            }
+            
+            if (historyStack.length > 0) {
+                const prev = historyStack.pop();
+                currentParent = prev.id;
+                loadMembers(prev.id, "পূর্ববর্তী");
+            } else {
+                loadMembers('root');
+            }
+        };
+
+        // Load all members on startup
+        async function loadAllMembers() {
+            try {
+                const snapshot = await getDocs(collection(db, "family"));
+                allMembers = [];
+                snapshot.forEach(doc => {
+                    allMembers.push({ id: doc.id, ...doc.data() });
+                });
+            } catch (error) {
+                console.error('Error loading all members:', error);
+            }
+        }
+
+        // Initialize
+        loadAllMembers();
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('memberModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+            if (event.key === 'ArrowLeft' && backBtn.style.display !== 'none') {
+                goBack();
+            }
+        });
+
+    </script>
+</body>
+</html>
